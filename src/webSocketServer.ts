@@ -100,7 +100,7 @@ export function startWebSocketServer() {
         });
 
         sock.on("error", err => {
-            console.error("[Vencord Companion WS", err);
+            console.error("[Plexcord Companion WS", err);
             outputChannel.appendLine(`[WS] Error: ${err}`);
         });
 
@@ -115,7 +115,7 @@ export function startWebSocketServer() {
     });
 
     wss.on("error", err => {
-        console.error("[Vencord Companion WS", err);
+        console.error("[Plexcord Companion WS", err);
         outputChannel.appendLine(`[WS] Error: ${err}`);
     });
 

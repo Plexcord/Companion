@@ -156,7 +156,7 @@ export class PatchCodeLensProvider implements CodeLensProvider {
                 const range = new Range(document.positionAt(patch.properties.pos), document.positionAt(patch.properties.end));
                 const lens = new CodeLens(range, {
                     title: "Test Patch",
-                    command: "vencord-companion.testPatch",
+                    command: "plexcord-companion.testPatch",
                     arguments: [data],
                     tooltip: "Test Patch",
                 });

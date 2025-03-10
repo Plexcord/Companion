@@ -1,8 +1,8 @@
 {
-    "name": "vencord-companion",
-    "displayName": "Vencord Companion",
+    "name": "plexcord-companion",
+    "displayName": "Plexcord Companion",
     "version": "0.1.3",
-    "description": "Vencord Companion is a vscode extension to test Vencord patches & webpack finds right from the comfort of your IDE",
+    "description": "Plexcord Companion is a vscode extension to test Plexcord patches & webpack finds right from the comfort of your IDE",
     "categories": [
         "Other",
         "Snippets",
@@ -10,17 +10,17 @@
     ],
     "keywords": [
         "Discord",
-        "Vencord",
+        "Plexcord",
         "Modding",
         "Typescript"
     ],
     "repository": {
         "type": "git",
-        "url": "https://github.com/Vencord/Companion"
+        "url": "https://github.com/Plexcord/Companion"
     },
     "license": "GPL-3.0",
-    "author": "Vendicated <vendicated+npm@riseup.net>",
-    "publisher": "Vendicated",
+    "author": "MutanPlex <contact@mutanplex.com>",
+    "publisher": "MutanPlex",
     "main": "./dist/extension.js",
     "scripts": {
         "compile": "esbuild ./src/extension.ts --platform=node --external:vscode --bundle --sourcemap --log-level=info --outfile=./dist/extension.js",
@@ -77,7 +77,7 @@
         "ui"
     ],
     "sponsor": {
-        "url": "https://github.com/sponsors/Vendicated"
+        "url": "https://github.com/sponsors/MutanPlex"
     },
-    "homepage": "https://github.com/Vencord/Companion"
+    "homepage": "https://github.com/Plexcord/Companion"
 }

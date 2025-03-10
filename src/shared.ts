@@ -1,6 +1,6 @@
 import { window } from "vscode";
 
-export const outputChannel = window.createOutputChannel("Vencord Companion");
+export const outputChannel = window.createOutputChannel("Plexcord Companion");
 
 export interface StringNode {
     type: "string";

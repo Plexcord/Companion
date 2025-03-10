@@ -2,13 +2,13 @@ import { createSourceFile, isCallExpression, Node, ScriptTarget } from "typescri
 import { CodeLens, CodeLensProvider, Range } from "vscode";
 import { isNotNull, tryParseFunction, tryParseRegularExpressionLiteral, tryParseStringLiteral } from "./helpers";
 
-const vencordWebpackImportRegex = /import \{(.+?)\} from ['`"]@webpack(\/.+?)?['`"]/;
+const plexcordWebpackImportRegex = /import \{(.+?)\} from ['`"]@webpack(\/.+?)?['`"]/;
 
 export const WebpackCodeLensProvider: CodeLensProvider = {
     provideCodeLenses(document) {
         const text = document.getText();
 
-        const match = vencordWebpackImportRegex.exec(text);
+        const match = plexcordWebpackImportRegex.exec(text);
         if (!match) return [];
 
         const finds = match[1].split(",")
@@ -28,7 +28,7 @@ export const WebpackCodeLensProvider: CodeLensProvider = {
                 const range = new Range(document.positionAt(node.getStart()), document.positionAt(node.getEnd()));
                 lenses.push(new CodeLens(range, {
                     title: "Test Find",
-                    command: "vencord-companion.testFind",
+                    command: "plexcord-companion.testFind",
                     arguments: [{ type, args: args.filter(isNotNull) }]
                 }));
             }

@@ -1,7 +1,7 @@
 {
     "Define Plugin": {
-        "prefix": [ "defPlugin", "vcPlugin" ],
-        "description": "Defines a Vencord Plugin",
+        "prefix": [ "defPlugin", "pcPlugin" ],
+        "description": "Defines a Plexcord Plugin",
         "body": [
             "import { Devs } from \"@utils/constants\";",
             "import definePlugin from \"@utils/types\";",

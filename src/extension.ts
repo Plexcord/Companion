@@ -16,7 +16,7 @@ export function activate(context: ExtensionContext) {
 		languages.registerCodeLensProvider({ language: "typescript" }, WebpackCodeLensProvider),
 		languages.registerCodeLensProvider({ language: "typescriptreact" }, WebpackCodeLensProvider),
 
-		commands.registerCommand("vencord-companion.testPatch", async (patch: PatchData) => {
+		commands.registerCommand("plexcord-companion.testPatch", async (patch: PatchData) => {
 			try {
 				await sendToSockets({ type: "testPatch", data: patch });
 				vscWindow.showInformationMessage("Patch OK!");
@@ -25,7 +25,7 @@ export function activate(context: ExtensionContext) {
 			}
 		}),
 
-		commands.registerCommand("vencord-companion.testFind", async (find: FindData) => {
+		commands.registerCommand("plexcord-companion.testFind", async (find: FindData) => {
 			try {
 				await sendToSockets({ type: "testFind", data: find });
 				vscWindow.showInformationMessage("Find OK!");
