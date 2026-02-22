@@ -1,4 +1,14 @@
 dist
+*.tgz
+dist.test
+src/webview/dist
 node_modules
 .vscode-test/
 *.vsix
+.direnv
+.eslintcache
+*.cpuprofile
+assets/test/ast/.modules/cache.json
+packages/plexcord-ast-parser/src/.plexcord-source
+packages/plexcord-ast-parser/src/__test__/.plexcord-source
+src/settings.ts

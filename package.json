@@ -1,7 +1,7 @@
 {
     "name": "plexcord-companion",
     "displayName": "Plexcord Companion",
-    "version": "0.1.3",
+    "version": "0.2.22",
     "description": "Plexcord Companion is a vscode extension to test Plexcord patches & webpack finds right from the comfort of your IDE",
     "categories": [
         "Other",
@@ -23,15 +23,123 @@
     "publisher": "MutanPlex",
     "main": "./dist/extension.js",
     "scripts": {
-        "compile": "esbuild ./src/extension.ts --platform=node --external:vscode --bundle --sourcemap --log-level=info --outfile=./dist/extension.js",
-        "lint": "eslint src --ext ts && pnpm typecheck",
-        "package": "vsce package --no-dependencies",
-        "vscode:prepublish": "pnpm compile --minify && pnpm lint",
-        "publish": "vsce publish --no-dependencies",
-        "watch": "pnpm compile --watch",
-        "typecheck": "tsc --noEmit"
+        "buildDeps": "pnpm -r --parallel -F \"./parsers/packages/*\" build",
+        "prebuild": "pnpm buildDeps",
+        "build": "node --experimental-transform-types ./scripts/build.mts",
+        "eslint": "eslint --cache",
+        "eslint:vscode:files": "pnpm eslint | grep -P ^[\\\\w/].*\\\\.[mc]?[jt]sx?$",
+        "eslint:vscode": "bash -c 'code $(pnpm --silent eslint:vscode:files)'",
+        "lint": "conc pnpm:eslint pnpm:typecheck",
+        "prepackage": "conc pnpm:build pnpm:lint",
+        "package": "vsce pack",
+        "publishExtension": "pnpm prepackage && vsce publish --no-dependencies",
+        "publishOvsx": "pnpm prepackage && ovsx publish --no-dependencies",
+        "typecheck": "tsc --noEmit -p ./tsconfig.ext.json",
+        "test": "vitest run",
+        "test:watch": "vitest",
+        "test:ui": "vitest --ui --api 9972",
+        "genTypes": "node --experimental-transform-types scripts/generateSettings/index.mts",
+        "postinstall": "conc pnpm:genTypes pnpm:buildDeps"
+    },
+    "dependencies": {
+        "@intrnl/xxhash64": "^0.1.2",
+        "@plexcord-companion/ast-parser": "link:./parsers/packages/ast-parser",
+        "@plexcord-companion/plexcord-ast-parser": "link:./parsers/packages/plexcord-ast-parser",
+        "@plexcord-companion/shared": "link:./parsers/packages/shared",
+        "@plexcord-companion/webpack-ast-parser": "link:./parsers/packages/webpack-ast-parser",
+        "@sadan4/devtools-pretty-printer": "^1.0.4",
+        "fast-diff": "^1.3.0",
+        "nanoid": "^5.0.9",
+        "typescript": "catalog:",
+        "ws": "^8.18.0"
+    },
+    "devDependencies": {
+        "@stylistic/eslint-plugin": "^3.0.1",
+        "@stylistic/eslint-plugin-ts": "^4.2.0",
+        "@types/node": "catalog:",
+        "@types/vscode": "1.80.0",
+        "@types/ws": "^8.5.14",
+        "@typescript-eslint/eslint-plugin": "^8.56.0",
+        "@typescript-eslint/parser": "^8.56.0",
+        "@vitest/coverage-v8": "catalog:",
+        "@vitest/ui": "catalog:",
+        "@vscode/vsce": "^3.6.0",
+        "baseline-browser-mapping": "^2.10.0",
+        "concurrently": "^9.2.1",
+        "esbuild": "^0.25.0",
+        "eslint": "^9.19.0",
+        "eslint-plugin-simple-import-sort": "^12.1.1",
+        "eslint-plugin-unicorn": "^61.0.2",
+        "eslint-plugin-unused-imports": "^4.1.4",
+        "glob": "^11.0.1",
+        "jiti": "^2.4.2",
+        "ovsx": "^0.10.5",
+        "resolve-tspaths": "^0.8.23",
+        "source-map-support": "^0.5.21",
+        "tsc-alias": "^1.8.16",
+        "typescript-eslint": "^8.56.0",
+        "vitest": "catalog:"
     },
     "contributes": {
+        "configuration": {
+            "title": "Plexcord Companion",
+            "properties": {
+                "plexcord-companion.showSidebar": {
+                    "default": false,
+                    "description": "Show the sidebar. This is intened to be used by workspaces in their .vscode/settings.json file, use alwaysShowSidebar instead to override this setting",
+                    "type": "boolean"
+                },
+                "plexcord-companion.alwaysShowSidebar": {
+                    "default": false,
+                    "description": "Always show the sidebar",
+                    "type": "boolean"
+                },
+                "plexcord-companion.diagnosticRefreshTimeout": {
+                    "default": 1500,
+                    "description": "the delay in ms bewteen diagnostic refreshes.",
+                    "type": "integer",
+                    "minimum": 0
+                }
+            }
+        },
+        "viewsContainers": {
+            "activitybar": [
+                {
+                    "id": "plexcord-companion-panel",
+                    "title": "Companion",
+                    "icon": "assets/plexcord.svg"
+                }
+            ]
+        },
+        "views": {
+            "plexcord-companion-panel": [
+                {
+                    "id": "plexcordSettings",
+                    "name": "Settings",
+                    "when": "config.plexcord-companion.showSidebar || config.plexcord-companion.alwaysShowSidebar || config.plexcord-companion.showSidebar || config.plexcord-companion.alwaysShowSidebar",
+                    "visibility": "visible",
+                    "icon": "assets/plexcord.svg"
+                }
+            ]
+        },
+        "commands": [
+            {
+                "command": "plexcord-companion.diffModuleSearch",
+                "title": "Plexcord Companion: Diff Module Search"
+            },
+            {
+                "command": "plexcord-companion.diffModule",
+                "title": "Plexcord Companion: Diff Module"
+            },
+            {
+                "command": "plexcord-companion.extract",
+                "title": "Plexcord Companion: Extract"
+            },
+            {
+                "command": "plexcord-companion.extractSearch",
+                "title": "Plexcord Companion: Extract With Search"
+            }
+        ],
         "snippets": [
             {
                 "language": "typescript",
@@ -49,24 +157,11 @@
     },
     "activationEvents": [
         "onLanguage:typescript",
+        "onLanguage:javascript",
         "onLanguage:typescriptreact"
     ],
-    "dependencies": {
-        "typescript": "^4.9.5",
-        "ws": "^8.12.1"
-    },
-    "devDependencies": {
-        "@types/node": "16.x",
-        "@types/vscode": "^1.70.0",
-        "@types/ws": "^8.5.4",
-        "@typescript-eslint/eslint-plugin": "^5.53.0",
-        "@typescript-eslint/parser": "^5.53.0",
-        "@vscode/vsce": "^2.18.0",
-        "esbuild": "^0.17.19",
-        "eslint": "^8.34.0"
-    },
     "engines": {
-        "vscode": "^1.70.0"
+        "vscode": "^1.80.0"
     },
     "icon": "icon.png",
     "galleryBanner": {
@@ -79,5 +174,18 @@
     "sponsor": {
         "url": "https://github.com/sponsors/MutanPlex"
     },
-    "homepage": "https://github.com/Plexcord/Companion"
+    "homepage": "https://github.com/Plexcord/Companion",
+    "pnpm": {
+        "onlyBuiltDependencies": [
+            "@vscode/vsce-sign",
+            "esbuild",
+            "keytar"
+        ]
+    },
+    "_vsce": "see https://github.com/microsoft/vscode-vsce/blob/main/src/main.ts for types",
+    "vsce": {
+        "dependencies": false,
+        "githubBranch": "main"
+    },
+    "packageManager": "pnpm@10.20.0+sha512.cf9998222162dd85864d0a8102e7892e7ba4ceadebbf5a31f9c2fce48dfce317a9c53b9f6464d1ef9042cba2e02ae02a9f7c143a2b438cd93c91840f0192b9dd"
 }

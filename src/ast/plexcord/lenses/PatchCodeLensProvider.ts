@@ -1,0 +1,50 @@
+import { CodeLens, CodeLensProvider, ExtensionContext, languages, TextDocument } from "vscode";
+
+import { PlexcordAstParser } from "@plexcord-companion/plexcord-ast-parser";
+
+import { toVscodeRange } from "@ast/util";
+
+export class PatchCodeLensProvider implements CodeLensProvider {
+    private constructor() { }
+
+    provideCodeLenses(document: TextDocument) {
+        const lenses: CodeLens[] = [];
+        const file = new PlexcordAstParser(document.getText(), document.uri.fsPath);
+        const patches = file.getPatches();
+
+        for (const { range, ...data } of patches) {
+            lenses.push(new CodeLens(toVscodeRange(range), {
+                title: "View Module",
+                command: "plexcord-companion.extractSearch",
+                arguments: [data.find, data.findType],
+                tooltip: "View Module",
+            }));
+            lenses.push(new CodeLens(toVscodeRange(range), {
+                title: "Diff Module",
+                command: "plexcord-companion.diffModuleSearch",
+                arguments: [data.find, data.findType],
+                tooltip: "Diff Module",
+            }));
+            lenses.push(new CodeLens(toVscodeRange(range), {
+                title: "Test Patch",
+                command: "plexcord-companion.testPatch",
+                arguments: [data],
+                tooltip: "Test Patch",
+            }));
+            lenses.push(new CodeLens(toVscodeRange(range), {
+                title: "Open in Patch Helper",
+                tooltip: "Opens the patch in patch helper, if another patch from this file is already open, it will be replaced",
+                command: "plexcord-companion.openPatchHelper",
+                arguments: [document, data],
+            }));
+        }
+        return lenses;
+    }
+
+    public static register({ subscriptions }: ExtensionContext) {
+        subscriptions.push(languages.registerCodeLensProvider(
+            { pattern: "**/{*plugins,plugins/_*}/{*.ts,*.tsx,**/index.ts,**/index.tsx}" },
+            new this(),
+        ));
+    }
+}

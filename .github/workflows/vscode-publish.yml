@@ -1,0 +1,102 @@
+name: Publish on VS Code Marketplace
+
+on:
+    push:
+      tags:
+        - v*
+
+
+jobs:
+  test:
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                os: [ubuntu-latest, windows-latest]
+
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: true
+            - uses: pnpm/action-setup@v3 # Install pnpm using packageManager key in package.json
+
+            - name: Use Node.js 24
+              uses: actions/setup-node@v5
+              with:
+                  node-version: 24
+                  cache: "pnpm"
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: Test if it bundles
+              run: pnpm build
+              
+            - name: Setup ESLint Cache
+              uses: actions/cache@v3
+              with:
+                path: |
+                  eslint-config-cache
+                key: ${{ runner.os }}-node-${{ hashFiles('**/pnpm-lock.yaml', '**/.eslint.config.mts') }}
+
+            - name: Test if linting passes
+              run: pnpm eslint --cache-strategy content --cache-location eslint-config-cache
+
+            - name: Test if type checking passes
+              run: pnpm typecheck
+
+            - name: run tests
+              run: pnpm test
+
+  publish:
+        needs: test
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  submodules: true
+            - uses: pnpm/action-setup@v3 # Install pnpm using packageManager key in package.json
+            - name: Use Node.js 24
+              uses: actions/setup-node@v5
+              with:
+                  node-version: 24
+                  cache: "pnpm"
+
+            - name: Install dependencies
+              run: pnpm install --frozen-lockfile
+            
+            - name: Create GitHub Release
+              env:
+                GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+              run: |
+                gh release create ${{ github.ref_name }} \
+                  --title "Release ${{ github.ref_name }}" \
+                  --fail-on-no-commits
+            
+            - name: Package Extension
+              run: pnpm package
+              
+            - name: Upload Package to Release
+              env:
+                GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+              run: |
+                # Upload the .vsix file
+                gh release upload ${{ github.ref_name }} *.vsix
+                
+                # Upload sourcemap files and metafile as a single archive
+                if [ -d "dist" ]; then
+                  # Create a zip archive of sourcemaps and metafile
+                  zip -r build-artifacts.zip dist/*.js.map dist/meta.json
+                  
+                  # Upload the archive to the release
+                  gh release upload ${{ github.ref_name }} build-artifacts.zip
+                fi
+
+            - name: Publish Extension to VS Code Marketplace
+              env: 
+                VSCE_PAT: ${{ secrets.VSCE_PAT }}
+              run: pnpm publishExtension
+
+            - name: Publish Extension to Open VSX Marketplace
+              env:
+                OVSX_PAT: ${{ secrets.OVSX_PAT }}
+              run: pnpm publishOvsx
