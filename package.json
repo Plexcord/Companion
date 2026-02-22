@@ -1,7 +1,7 @@
 {
     "name": "plexcord-companion",
     "displayName": "Plexcord Companion",
-    "version": "0.2.22",
+    "version": "0.2.23",
     "description": "Plexcord Companion is a vscode extension to test Plexcord patches & webpack finds right from the comfort of your IDE",
     "categories": [
         "Other",

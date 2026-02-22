@@ -33,33 +33,24 @@ Added diagnostics for patches and finds
 
 Minor bugfixes for new bundler settings
 
-# 0.2.3
+# 0.2.22
 
-Added a live patch helper, make sure to update the plugin as well, as things will break without it
+feat: Implement WebSocket server for Plexcord Companion
 
-# 0.2.4
+Added WebSocket server functionality in src/server/index.ts to handle connections and messaging with Discord clients.
 
-Added hover on intl keys and minor bugfixes
+Removed shared.ts as its contents were refactored or moved.
 
-# 1.6.0
+Introduced new sidebar components in src/sidebar/Nodes.ts and src/sidebar/RuntimeCommand.ts for dynamic UI elements.
 
-Support enums in discord modules
+Created tree data provider in src/sidebar/index.ts to manage sidebar interactions.
 
-# 1.6.1
+Defined new types in src/types/ast, src/types/server, and src/types/sidebar for better type safety and structure.
 
-Increase timeout for initial websocket connection
+Removed deprecated webSocketServer.ts and integrated its functionality into the new server structure.
 
-# 1.7.0
+Updated TypeScript configuration files for improved project structure and compilation settings.
 
-Improve error message when formatting fails
-Switch to new intl hashes
+# 0.2.23
 
-# 1.7.1
-
-Add more hints on hover for constants
-
-# 1.7.2
-
-- Add setting to control delay between diagnostic updates
-- Fix weird behavior while updating diagnostics for more than one document
-- Cancel all pending messages if the connection is closed. This should give better errors.
+Update CHANGELOG for WebSocket server implementation and related changes
