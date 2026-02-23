@@ -54,3 +54,7 @@ Updated TypeScript configuration files for improved project structure and compil
 # 0.2.23
 
 Update CHANGELOG for WebSocket server implementation and related changes
+
+# 0.2.24
+
+Update subproject commit reference in parsers
