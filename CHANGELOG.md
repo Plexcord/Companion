@@ -58,3 +58,7 @@ Update CHANGELOG for WebSocket server implementation and related changes
 # 0.2.24
 
 Update subproject commit reference in parsers
+
+# 0.2.25
+
+Update subproject commit reference in parsers
