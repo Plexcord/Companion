@@ -62,3 +62,7 @@ Update subproject commit reference in parsers
 # 0.2.25
 
 Update subproject commit reference in parsers
+
+# 0.2.26
+
+Update subproject commit reference in parsers
