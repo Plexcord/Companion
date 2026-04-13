@@ -82,3 +82,9 @@ Update subproject commit reference in parsers
 # 0.4.13
 
 Update subproject commit reference in parsers
+
+# 0.4.14
+
+- fix *plugins/_*/*.tsx? not being detected as a plugin file
+
+
