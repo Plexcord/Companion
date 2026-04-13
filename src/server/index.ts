@@ -1,7 +1,7 @@
 import { commands, window, workspace } from "vscode";
 
 import { Format } from "@sadan4/devtools-pretty-printer";
-import { BufferLike, RawData, WebSocket, WebSocketServer } from "ws";
+import { RawData, WebSocket, WebSocketServer } from "ws";
 
 import { areVersionsIncompatible, SemVerVersion } from "@plexcord-companion/shared/util";
 import { formatModule } from "@plexcord-companion/webpack-ast-parser";
@@ -223,7 +223,7 @@ export function startWebSocketServer() {
 
         const originalSend = sock.send;
 
-        sock.send = function (data: BufferLike) {
+        sock.send = function (data: Parameters<WebSocket["send"]>[0]) {
             outputChannel.trace(`[WS] SEND: ${data}`);
             // @ts-expect-error overloads are weird
             // eslint-disable-next-line prefer-rest-params

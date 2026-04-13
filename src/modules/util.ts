@@ -137,7 +137,7 @@ function resolvers<T>() {
 export enum SecTo {
     MS = 1000,
     SEC = 1,
-    MIN = (1 / 60),
+    MIN = 1 / 60,
 }
 
 function getPercentMarkers(num: number): number[] {

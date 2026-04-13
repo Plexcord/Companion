@@ -213,19 +213,19 @@ class _ModuleCache {
 
 const MODULE_ID_FILE_REGEX = /(\d+)\.js/;
 
-type DepsGeneratorOpts =
-  & {
-      noCache?: boolean;
-  }
-  & (
-    | {
-        modmap: Record<string, string>;
+type DepsGeneratorOpts
+    = & {
+        noCache?: boolean;
     }
-    | {
-        fromDisk: true;
-        folder?: string;
-        baseFolder?: string;
-    }
+    & (
+      | {
+          modmap: Record<string, string>;
+      }
+      | {
+          fromDisk: true;
+          folder?: string;
+          baseFolder?: string;
+      }
 );
 
 type MainDeps = Record<string, ModuleDep>;
@@ -470,10 +470,10 @@ export class ModuleDepManager {
             get(target, prop, rec) {
                 if (typeof prop === "string" && prop.match(/\d+/)) {
                     if (!Reflect.has(target, prop)) {
-                        const val = ({
+                        const val = {
                             lazyUses: [],
                             syncUses: [],
-                        } satisfies MainDeps[string]);
+                        } satisfies MainDeps[string];
 
                         Reflect.set(target, prop, val, rec);
                         return val;

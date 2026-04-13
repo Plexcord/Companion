@@ -1,35 +1,35 @@
 // should be the same types as ./src/plugins/devCompanion.dev/types/recieve.ts in plexcord
-export type SearchData =
-  | {
-      extractType: "id";
-      idOrSearch: number;
-  }
-  | (
-    | {
-        extractType: "search";
-        /**
+export type SearchData
+    = | {
+        extractType: "id";
+        idOrSearch: number;
+    }
+    | (
+      | {
+          extractType: "search";
+          /**
         * stringified regex
         */
-        idOrSearch: string;
-        findType: "regex";
-    }
-    | {
-        extractType: "search";
-        idOrSearch: string;
-        findType: "string";
-    }
+          idOrSearch: string;
+          findType: "regex";
+      }
+      | {
+          extractType: "search";
+          idOrSearch: string;
+          findType: "string";
+      }
     );
 
-export type FindOrSearchData =
-    | (SearchData & {
+export type FindOrSearchData
+    = | (SearchData & {
         usePatched: boolean | null;
     })
     | ({
         extractType: "find";
     } & _PrefixKeys<_CapitalizeKeys<FindData>, "find">);
 
-export type AnyFindType =
-    `find${"Component" | "ByProps" | "Store" | "ByCode" | "ModuleId" | "ComponentByCode" | ""}${"Lazy" | ""}`;
+export type AnyFindType
+    = `find${"Component" | "ByProps" | "Store" | "ByCode" | "ModuleId" | "ComponentByCode" | ""}${"Lazy" | ""}`;
 
 export type StringNode = {
     type: "string";
@@ -59,22 +59,21 @@ export type IReplacement = {
     match: StringNode | RegexNode;
     replace: StringNode | FunctionNode;
 };
-export type IFindType = (
-  | {
-      findType: "string";
-      /**
+export type IFindType
+    = | {
+        findType: "string";
+        /**
                * the find string
                */
-      find: string;
-  }
-  | {
-      findType: "regex";
-      /**
+        find: string;
+    }
+    | {
+        findType: "regex";
+        /**
                * stringified regex
                */
-      find: string;
-  }
-);
+        find: string;
+    };
 export type PatchData = IFindType & {
     replacement: IReplacement[];
 };
@@ -83,17 +82,17 @@ export type DisablePluginData = {
     pluginName: string;
 };
 
-export type OutgoingMessage =
-  | DisablePlugin
-  | RawIdS
-  | DiffPatch
-  | Reload
-  | ExtractModuleS
-  | TestPatch
-  | TestFind
-  | AllModules
-  | I18nLookup
-  | Version;
+export type OutgoingMessage
+    = | DisablePlugin
+      | RawIdS
+      | DiffPatch
+      | Reload
+      | ExtractModuleS
+      | TestPatch
+      | TestFind
+      | AllModules
+      | I18nLookup
+      | Version;
 export type FullOutgoingMessage = OutgoingMessage & { nonce: number; };
 // #region valid payloads
 export type I18nLookup = {

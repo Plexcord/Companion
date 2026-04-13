@@ -26,7 +26,7 @@ export class treeDataProvider implements TreeDataProvider<TNode> {
 
             constructor(private readonly _getNode: (
                 reRender: () => void,
-                lastNode: Item | null
+                lastNode: Item | null,
             ) => Promisable<Item>) { }
 
             async getNode(): Promise<Item> {

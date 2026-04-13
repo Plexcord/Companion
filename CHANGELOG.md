@@ -87,4 +87,11 @@ Update subproject commit reference in parsers
 
 - fix *plugins/_*/*.tsx? not being detected as a plugin file
 
+# 0.4.15
 
+chore: update dependencies and improve type definitions
+
+- Updated '@types/node' to version ^25.6.0 and other dependencies to their latest versions.
+- Refactored type definitions in cache.ts and send.ts for better readability and consistency.
+- Adjusted import statements in common.mts and index.ts for improved clarity.
+- Fixed minor formatting issues in util.ts and sidebar/index.ts.

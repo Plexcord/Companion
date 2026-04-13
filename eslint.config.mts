@@ -397,7 +397,9 @@ const styleRules: Partial<_RuleOptions> = {
         {
             // things like (foo && bar) || baz || qux
             nestedBinaryExpressions: false,
-            enforceForArrowConditionals: false,
+            // @stylistic/no-extra-parens deprecated `enforceForArrowConditionals` in favor of `ignoredNodes`
+            // Allow parentheses around conditional expressions used as arrow-function bodies.
+            ignoredNodes: ["ArrowFunctionExpression[body.type=ConditionalExpression]"],
             returnAssign: false,
             conditionalAssign: false,
         },
@@ -564,11 +566,12 @@ const styleRules: Partial<_RuleOptions> = {
         "error",
         {
             after: true,
-            before: false,
+            // Keep spaces around `=>` in function types; control `:` via overrides.
+            before: true,
             overrides: {
-                arrow: {
+                colon: {
                     after: true,
-                    before: true,
+                    before: false,
                 },
             },
         },
