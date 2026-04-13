@@ -95,3 +95,7 @@ chore: update dependencies and improve type definitions
 - Refactored type definitions in cache.ts and send.ts for better readability and consistency.
 - Adjusted import statements in common.mts and index.ts for improved clarity.
 - Fixed minor formatting issues in util.ts and sidebar/index.ts.
+
+# 0.4.16
+
+Update @types/vscode

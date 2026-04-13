@@ -57,7 +57,7 @@ export async function genSettings() {
         if (!SUPPORTED_TYPES.includes(settingType)) {
             console.warn(`Configuration key "${_key}" has unsupported type "${settingType}". Skipping.`);
             console.info("Supported types are:", SUPPORTED_TYPES.join(", "));
-            console.info("You can add support for more types by editing scripts/generateSettings.mts");
+            console.info("You can add support for more types by editing scripts/generateSettings/index.mts");
             continue;
         }
         entries.push({
