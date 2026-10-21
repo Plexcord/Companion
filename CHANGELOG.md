@@ -99,3 +99,7 @@ chore: update dependencies and improve type definitions
 # 0.4.16
 
 Update @types/vscode
+
+# 2.2.0
+
+update subproject
