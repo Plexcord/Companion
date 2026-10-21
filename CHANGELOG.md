@@ -107,3 +107,7 @@ update subproject
 # 2.2.1
 
 update subproject
+
+# 2.2.2
+
+fix PlexcordAstParser snapshots for Plexcord v1.22.0
