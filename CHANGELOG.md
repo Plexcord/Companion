@@ -103,3 +103,7 @@ Update @types/vscode
 # 2.2.0
 
 update subproject
+
+# 2.2.1
+
+update subproject
